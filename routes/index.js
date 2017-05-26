@@ -5,7 +5,6 @@ var formidable = require("formidable");
 
 
 const prodModel = require('./db.js').prodModel;
-const subprodModel = require('./db.js').subprodModel;
 
 
 
@@ -41,17 +40,57 @@ router.get('/product_list', function(req, res, next) {
 
     var parent = req.query.parent;
 
-    prodModel.find({root:root,parent:parent},(err,result)=>{
+    var currentpage = parseInt(req.query.currentpage);
 
-        if (err) {
-            console.log(err)
+    var pagesize = parseInt(req.query.pagesize);
+
+    var pagenum = 1;
+
+
+
+
+    var query = prodModel.find({root:root,parent:parent},{name:1,img:1,_id:-1});
+
+
+
+/*    query.exec(function(err,result){
+
+        console.log(result)
+    })*/
+    query.count(function(err, count) {
+
+        if (err){
+
+            res.json({err:1})
+        }else{
+
+            var skip = (currentpage-1)*pagesize;
+
+            pagenum = count/pagesize;
+
+            if (count %pagesize != 0){
+
+                pagenum = pagenum+1;
+            }
+
+            query.skip(skip).limit(pagesize).exec(function(err, items) {
+
+                if (err){
+
+                    res.json({err:1})
+                }else{
+
+                    res.json({err:0,data:items,currentpage:currentpage,pagenum:pagenum})
+
+                }
+            });
+
         }
-        else{
 
+        return;
 
-            res.json({data:result})
-        }
-    })
+    });
+
 
 })
 
@@ -110,7 +149,7 @@ router.post('/upload',function(req,res,next){
 
            console.log(parentname);
 
-           var url = '/Users/xukaijie/Desktop/node/demo/images/';
+           var url = '/Users/xukaijie/Desktop/node/tangsainode/images/';
 
            var imgName = parentname == ''? rootname+"_"+name:rootname+"_"+parentname+"_"+name
 
