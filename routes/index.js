@@ -34,6 +34,9 @@ router.get('/img', function(req, res, next) {
 });
 
 
+
+
+
 router.get('/product_list', function(req, res, next) {
 
     var root = req.query.root;
@@ -51,12 +54,11 @@ router.get('/product_list', function(req, res, next) {
 
     var query = prodModel.find({root:root,parent:parent},{name:1,img:1,_id:-1});
 
-
-
-/*    query.exec(function(err,result){
+    query.exec(function(err,result){
 
         console.log(result)
-    })*/
+    })
+
     query.count(function(err, count) {
 
         if (err){
@@ -101,7 +103,6 @@ router.get('/subProduct', function(req, res, next) {
     var name = req.query.name;
 
     subprodModel.find({parent:name},{name:1,_id:0},(err,result)=>{
-
 
         if (err) {
             console.log(err)
