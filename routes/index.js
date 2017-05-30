@@ -37,11 +37,12 @@ router.get('/img', function(req, res, next) {
 
 
 
-router.get('/product_list', function(req, res, next) {
+router.post('/product_list', function(req, res, next) {
 
-    var root = req.query.root.replace(/ /g,'');
 
-    var parent = req.query.parent.replace(/ /g,'');
+    var root = req.body.root;
+
+    var parent = req.body.parent;
 
     var currentpage = parseInt(req.query.currentpage);
 
@@ -50,6 +51,7 @@ router.get('/product_list', function(req, res, next) {
     var pagenum = 1;
 
 
+    console.log(root)
 
     if(parent == 'ALL'){
 
@@ -147,15 +149,16 @@ router.post('/upload',function(req,res,next){
             return;
         }else{
 
+            console.log(fields);
+            console.log(files)
 
            var oldpath = files.filedata.path;
 
-           var rootname = req.query.root.replace(/ /g,'');
-           var parentname = req.query.parent.replace(/ /g,'');;
-           var name = req.query.name.replace(/ /g,'');;
+           var rootname = fields.root.replace(/ /g,'');
+           var parentname = fields.parent.replace(/ /g,'');;
+           var name = fields.name.replace(/ /g,'');;
 
 
-           console.log(parentname);
 
            var url = '/Users/xukaijie/Desktop/node/tangsainode/images/';
 
@@ -169,9 +172,9 @@ router.post('/upload',function(req,res,next){
 
             var json = {
 
-                root:rootname,
-                parent:parentname,
-                name:name,
+                root: fields.root,
+                parent:fields.parent,
+                name:fields.name,
                 img:'/images/'+imgName,
                 ctime:Date.now()
             }
