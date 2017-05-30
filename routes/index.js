@@ -39,9 +39,9 @@ router.get('/img', function(req, res, next) {
 
 router.get('/product_list', function(req, res, next) {
 
-    var root = req.query.root;
+    var root = req.query.root.replace(/ /g,'');
 
-    var parent = req.query.parent;
+    var parent = req.query.parent.replace(/ /g,'');
 
     var currentpage = parseInt(req.query.currentpage);
 
@@ -51,8 +51,15 @@ router.get('/product_list', function(req, res, next) {
 
 
 
+    if(parent == 'ALL'){
 
-    var query = prodModel.find({root:root,parent:parent},{name:1,img:1,_id:-1});
+        var query = prodModel.find({root:root},{name:1,img:1,_id:0});
+
+    }else{
+
+        var query = prodModel.find({root:root,parent:parent},{name:1,img:1,_id:0});
+
+    }
 
     query.exec(function(err,result){
 
@@ -143,9 +150,9 @@ router.post('/upload',function(req,res,next){
 
            var oldpath = files.filedata.path;
 
-           var rootname = req.query.root;
-           var parentname = req.query.parent;
-           var name = req.query.name;
+           var rootname = req.query.root.replace(/ /g,'');
+           var parentname = req.query.parent.replace(/ /g,'');;
+           var name = req.query.name.replace(/ /g,'');;
 
 
            console.log(parentname);
@@ -154,9 +161,9 @@ router.post('/upload',function(req,res,next){
 
            var imgName = parentname == ''? rootname+"_"+name:rootname+"_"+parentname+"_"+name
 
-            imgName = imgName+'.png';
+            var imgName_1 = imgName+'.png';
 
-            url = url+imgName;
+            url = url+imgName_1;
 
            fs.renameSync(oldpath,url);
 
@@ -165,7 +172,8 @@ router.post('/upload',function(req,res,next){
                 root:rootname,
                 parent:parentname,
                 name:name,
-                img:url
+                img:'/images/'+imgName,
+                ctime:Date.now()
             }
 
             var mongooseEntity = new prodModel(json);
