@@ -19,6 +19,8 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 
 app.use(bodyParser.json());
+app.use(bodyParser.text('text/plain'));
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -33,7 +35,6 @@ var users = require('./routes/users');
 
 app.all('*',function (req, res, next) {
 
-    console.log(req.body)
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
     res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');

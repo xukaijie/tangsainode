@@ -40,9 +40,12 @@ router.get('/img', function(req, res, next) {
 router.post('/product_list', function(req, res, next) {
 
 
-    var root = req.body.root;
 
-    var parent = req.body.parent;
+    var body = JSON.parse(req.body);
+
+    var root = body.root;
+
+    var parent = body.parent;
 
     var currentpage = parseInt(req.query.currentpage);
 
@@ -50,8 +53,6 @@ router.post('/product_list', function(req, res, next) {
 
     var pagenum = 1;
 
-
-    console.log(root)
 
     if(parent == 'ALL'){
 
@@ -149,8 +150,6 @@ router.post('/upload',function(req,res,next){
             return;
         }else{
 
-            console.log(fields);
-            console.log(files)
 
            var oldpath = files.filedata.path;
 
