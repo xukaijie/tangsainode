@@ -135,7 +135,7 @@ router.post('/product_detail', function(req, res, next) {
     var name = body.name;
 
 
-    prodModel.find({root:root,name:name},{feature:1,descp:1,_id:0},(err,result)=>{
+    prodModel.find({root:root,name:name},{feature:1,descp:1,img:1,_id:0},(err,result)=>{
 
         if (err){
 
@@ -175,8 +175,6 @@ router.post('/upload',function(req,res,next){
            var parentname = fields.parent.replace(/ /g,'');;
            var name = fields.name.replace(/ /g,'');;
 
-            console.log(fields)
-
            var url = '/var/www/html/images/';
 
            var imgName = parentname == ''? rootname+"_"+name:rootname+"_"+parentname+"_"+name
@@ -206,7 +204,7 @@ router.post('/upload',function(req,res,next){
             var mongooseEntity = new prodModel({root:fields.root,name:fields.name},json,true);
 */
 
-            prodModel.update({root:fields.root,name:fields.name},json,{upsert:true},(err,result)=> {
+            prodModel.update({root:fields.root,parent:fields.parent,name:fields.name},json,{upsert:true},(err,result)=> {
 
 
                 if (err) {
