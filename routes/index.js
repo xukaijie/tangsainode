@@ -130,7 +130,30 @@ router.get('/subProduct', function(req, res, next) {
 })
 
 
+router.post('/product_detail', function(req, res, next) {
 
+
+    var body = JSON.parse(req.body);
+
+    var root = body.root;
+
+    var name = body.name;
+
+
+    prodModel.find({root:root,name:name},{feature:1,descp:1,_id:0},(err,result)=>{
+
+        if (err){
+
+            res.json({err:1})
+        }else{
+
+            res.json({err:0,data:result[0]})
+        }
+
+    });
+
+    return;
+})
 
 router.post('/upload',function(req,res,next){
 
@@ -169,6 +192,10 @@ router.post('/upload',function(req,res,next){
 
            fs.renameSync(oldpath,url);
 
+           var ftArray =[];
+
+           ftArray = fields.feature.split("_")
+
             var json = {
 
                 root: fields.root,
@@ -177,12 +204,14 @@ router.post('/upload',function(req,res,next){
                 img:'/images/'+imgName,
                 ctime:Date.now(),
                 descp:fields.descp,
-                feature:fields.feature
+                feature:ftArray
             }
 
-            var mongooseEntity = new prodModel(json);
+/*
+            var mongooseEntity = new prodModel({root:fields.root,name:fields.name},json,true);
+*/
 
-            mongooseEntity.save((err,result)=> {
+            prodModel.update({root:fields.root,name:fields.name},json,{upsert:true},(err,result)=> {
 
 
                 if (err) {
