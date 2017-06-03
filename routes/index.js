@@ -78,12 +78,7 @@ router.post('/product_list', function(req, res, next) {
 
             var skip = (currentpage-1)*pagesize;
 
-            pagenum = count/pagesize;
-
-            if (count %pagesize != 0){
-
-                pagenum = pagenum+1;
-            }
+            pagenum = Math.ceil( count/pagesize)
 
             query.skip(skip).limit(pagesize).exec(function(err, items) {
 
@@ -182,7 +177,7 @@ router.post('/upload',function(req,res,next){
 
             console.log(fields)
 
-           var url = '/Users/xukaijie/Desktop/node/tangsainode/images/';
+           var url = '/var/www/html/images/';
 
            var imgName = parentname == ''? rootname+"_"+name:rootname+"_"+parentname+"_"+name
 
@@ -201,7 +196,7 @@ router.post('/upload',function(req,res,next){
                 root: fields.root,
                 parent:fields.parent,
                 name:fields.name,
-                img:'/images/'+imgName,
+                img:'/images/'+imgName+'.png',
                 ctime:Date.now(),
                 descp:fields.descp,
                 feature:ftArray
