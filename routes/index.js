@@ -54,13 +54,13 @@ router.post('/product_list', function(req, res, next) {
     var pagenum = 1;
 
 
-    if(parent == 'ALL'){
+    if(parent == 'ALL' || parent == 'All'){
 
         var query = prodModel.find({root:root},{name:1,img:1,_id:0});
 
     }else{
 
-        var query = prodModel.find({root:root,parent:parent},{name:1,img:1,_id:0});
+        var query = prodModel.find({root:root,parent:parent},{name:1,img:1,feature:1,_id:0});
 
     }
 
@@ -157,7 +157,7 @@ router.post('/upload',function(req,res,next){
            var parentname = fields.parent.replace(/ /g,'');;
            var name = fields.name.replace(/ /g,'');;
 
-
+            console.log(fields)
 
            var url = '/Users/xukaijie/Desktop/node/tangsainode/images/';
 
@@ -175,7 +175,9 @@ router.post('/upload',function(req,res,next){
                 parent:fields.parent,
                 name:fields.name,
                 img:'/images/'+imgName,
-                ctime:Date.now()
+                ctime:Date.now(),
+                descp:fields.descp,
+                feature:fields.feature
             }
 
             var mongooseEntity = new prodModel(json);

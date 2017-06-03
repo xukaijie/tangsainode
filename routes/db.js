@@ -12,7 +12,10 @@ var prod = new mongoose.Schema({
     name:String,
     parent:String,
     root:String,
-    img:String
+    img:String,
+    ctime:String,
+    descp:String,
+    feature:Array
 })
 
 /*var subprod = new mongoose.Schema({
