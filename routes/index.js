@@ -17,8 +17,6 @@ router.get('/', function(req, res, next) {
   res.json({src:'/Users/xukaijie/Desktop/logo.jpg'})
     return;
 
-  console.log("#######")
-
 });
 
 
@@ -29,10 +27,7 @@ router.get('/img', function(req, res, next) {
 
     return;
 
-    console.log("#######")
-
 });
-
 
 
 
@@ -135,7 +130,7 @@ router.post('/product_detail', function(req, res, next) {
     var name = body.name;
 
 
-    prodModel.find({root:root,name:name},{feature:1,descp:1,img:1,_id:0},(err,result)=>{
+    prodModel.find({root:root,name:name},{feature:1,special:1,descp:1,img:1,_id:0},(err,result)=>{
 
         if (err){
 
@@ -143,6 +138,31 @@ router.post('/product_detail', function(req, res, next) {
         }else{
 
             res.json({err:0,data:result[0]})
+        }
+
+    });
+
+    return;
+})
+
+router.post('/delete', function(req, res, next) {
+
+
+    var body = JSON.parse(req.body);
+
+    var root = body.root;
+
+    var name = body.name;
+
+
+    prodModel.remove({root:root,name:name},(err,result)=>{
+
+        if (err){
+
+            res.json({err:1})
+        }else{
+
+            res.json({err:0})
         }
 
     });
@@ -187,7 +207,13 @@ router.post('/upload',function(req,res,next){
 
            var ftArray =[];
 
-           ftArray = fields.feature.split("_")
+           ftArray = fields.feature.split("_");
+
+           var spArray = [];
+
+           spArray = fields.special.split("_");
+
+
 
             var json = {
 
@@ -197,12 +223,14 @@ router.post('/upload',function(req,res,next){
                 img:'/images/'+imgName+'.png',
                 ctime:Date.now(),
                 descp:fields.descp,
-                feature:ftArray
+                feature:ftArray,
+                special:spArray
             }
 
 /*
             var mongooseEntity = new prodModel({root:fields.root,name:fields.name},json,true);
 */
+
 
             prodModel.update({root:fields.root,parent:fields.parent,name:fields.name},json,{upsert:true},(err,result)=> {
 
@@ -224,6 +252,8 @@ router.post('/upload',function(req,res,next){
     });
 
 })
+
+
 
 
 

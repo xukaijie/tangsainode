@@ -15,7 +15,8 @@ var prod = new mongoose.Schema({
     img:String,
     ctime:String,
     descp:String,
-    feature:Array
+    feature:Array,
+    special:Array
 })
 
 /*var subprod = new mongoose.Schema({
