@@ -130,7 +130,7 @@ router.post('/product_detail', function(req, res, next) {
     var name = body.name;
 
 
-    prodModel.find({root:root,name:name},{feature:1,special:1,descp:1,img:1,_id:0},(err,result)=>{
+    prodModel.find({root:root,name:name},{feature:1,special:1,descp:1,img:1,sub_img_list:1,_id:0},(err,result)=>{
 
         if (err){
 
@@ -201,9 +201,9 @@ router.post('/upload',function(req,res,next){
 
             var imgName_1 = imgName+'.png';
 
-            url = url+imgName_1;
+            var url_save = url+imgName_1;
 
-           fs.renameSync(oldpath,url);
+           fs.renameSync(oldpath,url_save);
 
            var ftArray =[];
 
@@ -214,6 +214,31 @@ router.post('/upload',function(req,res,next){
            spArray = fields.special.split("_");
 
 
+           /*处理子图片*/
+
+
+           var sub_img_list = [];
+
+           var num = fields.subfile_num;
+
+
+           for (var i = 0; i<num;i++){
+
+               var key = 'filedata'+(i+1);
+               var sub_img_path = files[key].path;
+
+               var name_1 = imgName+'_sub_file_'+i;
+
+               var name = url+name_1+'.png';
+
+
+               fs.renameSync(sub_img_path,name);
+
+               sub_img_list.push('/images/'+name_1+'.png');
+
+           }
+
+
 
             var json = {
 
@@ -221,6 +246,7 @@ router.post('/upload',function(req,res,next){
                 parent:fields.parent,
                 name:fields.name,
                 img:'/images/'+imgName+'.png',
+                sub_img_list:sub_img_list,
                 ctime:Date.now(),
                 descp:fields.descp,
                 feature:ftArray,
