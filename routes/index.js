@@ -197,9 +197,11 @@ router.post('/upload',function(req,res,next){
 
            var url = '/var/www/html/images/';
 
-           var imgName = parentname == ''? rootname+"_"+name:rootname+"_"+parentname+"_"+name
+           var imgName = parentname == ''? rootname+"_"+name:rootname+"_"+parentname+"_"+name;
 
-            var imgName_1 = imgName+'.png';
+            var imgName_base64 = new Buffer(imgName).toString('base64');
+
+            var imgName_1 = imgName_base64+'.png';
 
             var url_save = url+imgName_1;
 
@@ -227,7 +229,7 @@ router.post('/upload',function(req,res,next){
                var key = 'filedata'+(i+1);
                var sub_img_path = files[key].path;
 
-               var name_1 = imgName+'_sub_file_'+i;
+               var name_1 = imgName_base64+'_sub_file_'+i;
 
                var name = url+name_1+'.png';
 
@@ -245,7 +247,7 @@ router.post('/upload',function(req,res,next){
                 root: fields.root,
                 parent:fields.parent,
                 name:fields.name,
-                img:'/images/'+imgName+'.png',
+                img:'/images/'+imgName_base64+'.png',
                 sub_img_list:sub_img_list,
                 ctime:Date.now(),
                 descp:fields.descp,
