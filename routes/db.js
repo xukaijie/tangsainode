@@ -1,8 +1,14 @@
 'use strict'
 const mongoose = require('mongoose')
 // 连接mongodb
-var conn = mongoose.connect('mongodb://47.52.112.187/tangsai');
 
+const options = {
+    user : "xukaida",
+    pass : "xukaida@xukaida",
+    auth : {authMechanism: 'MONGODB-CR'}
+}
+
+var conn = mongoose.connect('mongodb://@47.52.112.187/tangsai',options);
 /*conn.on('error', function(error) {
     console.log(error);
 });*/
