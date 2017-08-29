@@ -203,7 +203,7 @@ router.post('/upload',function(req,res,next){
 
             if (imgName_base64.length > 100){
 
-                imgName_base64 = imgName_base64.substring(0,100);
+                imgName_base64 = imgName_base64.subString(0,100);
             }
 
             var imgName_1 = imgName_base64+'.png';
