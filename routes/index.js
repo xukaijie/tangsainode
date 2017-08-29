@@ -201,6 +201,11 @@ router.post('/upload',function(req,res,next){
 
             var imgName_base64 = new Buffer(imgName).toString('base64');
 
+            if (imgName_base64.length > 100){
+
+                imgName_base64 = imgName_base64.substring(0,100);
+            }
+
             var imgName_1 = imgName_base64+'.png';
 
             var url_save = url+imgName_1;
